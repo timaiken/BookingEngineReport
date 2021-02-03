@@ -6,7 +6,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from datetime import datetime, timedelta
 
-def send_email(pwd, path, rsgc, prod, recip):
+def send_email(pwd, path, rsgc, prod, recipient):
   # datetime object containing current date and time
   now = datetime.now()
   short_date_string = now.strftime("%Y-%m-%d")
@@ -28,12 +28,14 @@ def send_email(pwd, path, rsgc, prod, recip):
   else:
     smtp_server = "mail.avgolf-teetimes.com"
 
-  if recip != None:
-    receiver_email = recip # "ranchosierragc@gmail.com"
+  if recipient != None:
+    receiver_email = recipient
   elif rsgc:
-    receiver_email = "tim@timaiken.com" # "ranchosierragc@gmail.com"
+    receiver_email = "ranchosierragc@gmail.com"
   else:
-    receiver_email = "tim@timaiken.com" # "desertairegc@gmail.com"
+    receiver_email = "desertairegc@gmail.com"
+
+  print("receiver_email:", receiver_email)
 
   # Create a multipart message and set headers
   message = MIMEMultipart()

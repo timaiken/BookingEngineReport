@@ -47,3 +47,6 @@ flycheck_*.el
 #pwd files
 todays_dagc_bookings.sh
 todays_rsgc_bookings.sh
+
+#python
+__pycache__/

@@ -240,10 +240,14 @@ def main(argv):
 
     if enddate_str == None and ndays == None:      # no end date - use start date for end date
         enddate = startdate
-    elif ndays != None:
+    if ndays != None:
         enddate = startdate + timedelta(days = int(ndays))
     else:
         enddate = datetime.strptime(enddate_str, "%Y-%m-%d").date()
+
+    if verbose:
+        print("Start date: ", startdate)
+        print("End date: ", enddate)
 
     if enddate < startdate:
         print("End date is less than start date.  Bookings will be empty. Exiting.")
@@ -274,7 +278,8 @@ def main(argv):
 
     if filename == None and sendemail:
         filename = '/tmp/temp_' + datetime.now().strftime("%Y%m%d%H%S%f")
-        print("filename is", filename)
+        if verbose:
+            print("temporary filename is", filename)
 
     records = getSQLData(booking_type, startdate_str, enddate_str, rsgc, passwd)
     print_records_in_html(filename, golf_course_name, column_styles, column_titles, records)
