@@ -48,5 +48,8 @@ flycheck_*.el
 todays_dagc_bookings.sh
 todays_rsgc_bookings.sh
 
-#python
+# python
 __pycache__/
+
+# booking generated pages
+booking_pages/

@@ -20,12 +20,12 @@ export LD_LIBRARY_PATH=/opt/rh/rh-python35/root/usr/lib64${LD_LIBRARY_PATH:+:${L
 export MANPATH=/opt/rh/rh-python35/root/usr/share/man:$MANPATH
 export PKG_CONFIG_PATH=/opt/rh/rh-python35/root/usr/lib64/pkgconfig${PKG_CONFIG_PATH:+:${PKG_CONFIG_PATH}}
 export XDG_DATA_DIRS="/opt/rh/rh-python35/root/usr/share:${XDG_DATA_DIRS:-/usr/local/share:/usr/share}"
+export PYTHONPATH=/home3/rsgcmgmt/py_lib/lib/python3.5/site-packages
 
 #
 # change the following variables if you want to move the python files or the output files and log
 #
 PYTHON_DIR=/home3/rsgcmgmt/bin/python
-# PYTHON_DIR/home3/rsgcmgmt/bemods/BookingEngineReportGen
 HTML_PAGE_DIR=/home3/rsgcmgmt/booking_pages
 
 testmode=""
@@ -41,6 +41,12 @@ while [ -n "$(echo $1 | grep '-')" ]; do
                             exit 1
   esac
 done
+
+echo
+if [ "${testmode}" == "-t" ]; then
+  PYTHON_DIR=/home3/rsgcmgmt/bemods/BookingEngineReportGen
+  HTML_PAGE_DIR=/home3/rsgcmgmt/bemods/BookingEngineReportGen/booking_pages
+fi
 
 now=`date`
 date=`date +%Y-%m-%d`
