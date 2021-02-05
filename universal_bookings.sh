@@ -42,7 +42,6 @@ while [ -n "$(echo $1 | grep '-')" ]; do
   esac
 done
 
-echo
 if [ "${testmode}" == "-t" ]; then
   PYTHON_DIR=/home3/rsgcmgmt/bemods/BookingEngineReportGen
   HTML_PAGE_DIR=/home3/rsgcmgmt/bemods/BookingEngineReportGen/booking_pages
@@ -51,10 +50,10 @@ fi
 now=`date`
 date=`date +%Y-%m-%d`
 longdate=`date "+%A, %B %d, %Y"`
-/opt/rh/rh-python35/root/usr/bin/python ${PYTHON_DIR}/booking.py  -d -p 3N95y7M7jWsQFWF ${testmode} -l 7 -m rsGc4fun -o ${HTML_PAGE_DIR}/dagc_${date}.html
+/opt/rh/rh-python35/root/usr/bin/python ${PYTHON_DIR}/booking.py  -d -p 2kjsdf90sd0f ${testmode} -l 7 -m lasdjfoiwe -o ${HTML_PAGE_DIR}/dagc_${date}.html
 echo "${now}: Desert Aire booking page for ${longdate} created and emailed." >> ${HTML_PAGE_DIR}/log
 
-/opt/rh/rh-python35/root/usr/bin/python ${PYTHON_DIR}/booking.py  -r -p 3N95y7M7jWsQFWF ${testmode} -l 7 -m rsGc4fun -o ${HTML_PAGE_DIR}/rsgc_${date}.html
+/opt/rh/rh-python35/root/usr/bin/python ${PYTHON_DIR}/booking.py  -r -p 2kjsdf90sd0f ${testmode} -l 7 -m lasdjfoiwe -o ${HTML_PAGE_DIR}/rsgc_${date}.html
 echo "${now}: Rancho Sierra booking page for ${longdate} created and emailed." >> ${HTML_PAGE_DIR}/log
 
 
