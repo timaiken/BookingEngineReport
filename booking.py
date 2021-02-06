@@ -1,5 +1,6 @@
 import mysql.connector, smtplib, ssl, sys, getopt
 from datetime import datetime, date, timedelta
+import time
 from html_formatter import print_records_in_html
 from send_email import send_email
 from printwrapper import PrintWrapper
@@ -283,7 +284,14 @@ def main(argv):
 
     records = getSQLData(booking_type, startdate_str, enddate_str, rsgc, passwd)
     print_records_in_html(filename, golf_course_name, column_styles, column_titles, records)
-    if sendemail:
+    if sendemail and recipientEmail == None:
+        # send_email(wp_passwd, filename, rsgc, prod, "tim@timaiken.com")
+        # tim.sleep(2)
+        # send_email(wp_passwd, filename, rsgc, prod, "taaiken@gmail.com")
+        send_email(wp_passwd, filename, rsgc, prod, "ranchosierragc@gmail.com")
+        time.sleep(2)
+        send_email(wp_passwd, filename, rsgc, prod, "desertairegc@gmail.com")
+    else:
         send_email(wp_passwd, filename, rsgc, prod, recipientEmail)
 
 if __name__ == "__main__":
