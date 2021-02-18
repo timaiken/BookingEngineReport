@@ -6,7 +6,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from datetime import datetime, timedelta
 
-def send_email(pwd, path, rsgc, prod, recipient):
+def send_email(pwd, path, rsgc, prod, to_email, cc_email, verbose_mode):
   # datetime object containing current date and time
   now = datetime.now()
   short_date_string = now.strftime("%Y-%m-%d")
@@ -28,35 +28,27 @@ def send_email(pwd, path, rsgc, prod, recipient):
   else:
     smtp_server = "mail.avgolf-teetimes.com"
 
-  if recipient != None:
-    receiver_email = recipient
-  elif rsgc:
-    receiver_email = "ranchosierragc@gmail.com"
-  else:
-    receiver_email = "desertairegc@gmail.com"
+  if to_email == None:
+    to_email = "tim@timaiken.com@gmail.com"
 
-  print("receiver_email:", receiver_email)
+  if cc_email == None:
+    cc_email = "taaiken@gmail.com"
+
+  if verbose_mode:
+    print("to_email:", to_email)
+    print("cc_email:", cc_email)
 
   # Create a multipart message and set headers
   message = MIMEMultipart()
   message["From"] = sender_email
-  message["To"] = receiver_email
+  message["To"] = to_email
   message["Subject"] = subject
-  message["Bcc"] = "tim@timaiken.com"  # Recommended for mass emails
+  message["Cc"] = cc_email             # Recommended for mass emails
 
   # Add body to email
   message.attach(MIMEText(body, "plain"))
 
   filename = ntpath.basename(path)
-  #if rsgc:
-  #  filename = "rsgc_" + short_date_string + ".csv"
-  #else:
-  #  filename = "dagc_" + short_date_string + ".csv"
-
-  #if prod:
-  #  pathname = "/home3/rsgcmgmt/data/prod/" + filename
-  #else:
-  #  pathname = "/home3/rsgcmgmt/data/" + filename
 
   # Open PDF file in binary mode
   with open(path, "rb") as attachment:
@@ -79,11 +71,13 @@ def send_email(pwd, path, rsgc, prod, recipient):
   # Add attachment to message and convert message to string
   message.attach(part)
   text = message.as_string()
+  email_recipients = [to_email, cc_email]
 
   # Log in to server using secure context and send email
   context = ssl.create_default_context()
   with smtplib.SMTP_SSL(smtp_server, port, context=context) as server:
       server.login(sender_email, password)
-      server.sendmail(sender_email, receiver_email, text)
+      server.sendmail(sender_email, email_recipients, text)
+
 
 

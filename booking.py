@@ -166,6 +166,7 @@ column_titles = [
 def usage():
     print ('usage: ', sys.argv[0],'[Options]')
     print("Options:")
+    print("  -c cc_email        Cc recipient of email")
     print("  -d                 Generate Desert Aire Bookings")
     print("  -e enddate         End date for bookings (yyyy-mm-dd)")
     print("  -h                 Print this help message")
@@ -175,7 +176,7 @@ def usage():
     print("  -p pwd             SQL password (required to get bookings)")
     print("  -r                 Generate Rancho Sierra Bookings")
     print("  -s startdate       Start date for bookings (yyyy-mm-dd)")
-    print("  -t                 Test mode (email to Tim)")
+    print("  -t to_email        to recipient of email")
     print("  -v                 verbose - primarily debugging - output printed")
     print(" ")
     print("One of -r or -d is required. If no start date is given, the current date is used. ")
@@ -195,8 +196,10 @@ def main(argv):
     testmode = False
     filename = None
     verbose = False
+    to = None
+    cc = None
     try:
-        opts, args = getopt.getopt(argv,"de:hl:m:o:p:rs:tv")
+        opts, args = getopt.getopt(argv,"c:de:hl:m:o:p:rs:t:v")
     except getopt.GetoptError:
         print ("Error in options")
         usage()
@@ -205,6 +208,8 @@ def main(argv):
         if opt == '-h':
             usage()
             sys.exit()
+        elif opt in ("-c", "--cc"):
+            cc = arg
         elif opt in ("-d", "--dagc"):
             dagc = True
         elif opt in ("-e", "--enddate"):
@@ -222,8 +227,8 @@ def main(argv):
             rsgc = True
         elif opt in ("-s", "--startdate"):
             startdate_str = arg
-        elif opt in ("-t", "--testmode"):
-            testmode = True
+        elif opt in ("-t", "--to"):
+            to = arg
         elif opt in ("-v", "--verbose"):
             verbose = True
         else:
@@ -271,8 +276,8 @@ def main(argv):
         booking_type = 37
         golf_course_name = "Desert Aire Golf Course"
 
-    if testmode:
-        recipientEmail = "tim@timaiken.com"
+    if to == None and cc == None:
+        print("Warning: no email recipients specified. Defaulting.")
 
     startdate_str = startdate.strftime("%Y-%m-%d")
     enddate_str = enddate.strftime("%Y-%m-%d")
@@ -284,15 +289,16 @@ def main(argv):
 
     records = getSQLData(booking_type, startdate_str, enddate_str, rsgc, passwd)
     print_records_in_html(filename, golf_course_name, column_styles, column_titles, records)
-    if sendemail and recipientEmail == None:
-        # send_email(wp_passwd, filename, rsgc, prod, "tim@timaiken.com")
-        # tim.sleep(2)
-        # send_email(wp_passwd, filename, rsgc, prod, "taaiken@gmail.com")
-        send_email(wp_passwd, filename, rsgc, prod, "ranchosierragc@gmail.com")
+
+    if verbose:
+        print("to:", to)
+        print("cc:", cc)
+    if sendemail and to == None and cc == None:
+        send_email(wp_passwd, filename, rsgc, prod, "ranchosierragc@gmail.com", "desertairegc@gmail.com")
         time.sleep(2)
-        send_email(wp_passwd, filename, rsgc, prod, "desertairegc@gmail.com")
+        send_email(wp_passwd, filename, rsgc, prod, "desertairegc@gmail.com", "ranchosierragc@gmail.com")
     else:
-        send_email(wp_passwd, filename, rsgc, prod, recipientEmail)
+        send_email(wp_passwd, filename, rsgc, prod, to, cc, verbose)
 
 if __name__ == "__main__":
    main(sys.argv[1:])
