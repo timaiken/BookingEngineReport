@@ -252,6 +252,7 @@ def main(argv):
         enddate = datetime.strptime(enddate_str, "%Y-%m-%d").date()
 
     if verbose:
+        print("Testing ... ")
         print("Start date: ", startdate)
         print("End date: ", enddate)
 
@@ -272,9 +273,11 @@ def main(argv):
     if (rsgc):
         booking_type = 36
         golf_course_name = "Rancho Sierra Golf Course"
+        gc_code = "rsgc"
     else:
         booking_type = 37
         golf_course_name = "Desert Aire Golf Course"
+        gc_code = "dagc"
 
     if to == None and cc == None:
         print("Warning: no email recipients specified. Defaulting.")
@@ -288,7 +291,7 @@ def main(argv):
             print("temporary filename is", filename)
 
     records = getSQLData(booking_type, startdate_str, enddate_str, rsgc, passwd)
-    print_records_in_html(filename, golf_course_name, column_styles, column_titles, records)
+    print_records_in_html(filename, gc_code, golf_course_name, column_styles, column_titles, records)
 
     if verbose:
         print("to:", to)

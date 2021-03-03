@@ -47,9 +47,11 @@ flycheck_*.el
 #pwd files
 todays_dagc_bookings.sh
 todays_rsgc_bookings.sh
+universal_bookings.sh
 
 # python
 __pycache__/
 
 # booking generated pages
 booking_pages/
+

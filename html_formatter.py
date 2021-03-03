@@ -110,9 +110,18 @@ def print_html_style_section():
     printf("    </style>\n")
 
 
-def print_html_head_section():
+def print_html_style_section_rsgc():
+    printf('<link rel="stylesheet" href="http://www.ranchosierragolfcourse.com/styles/rsgcStyle.css">')
+
+def print_html_style_section_dagc():
+    printf('<link rel="stylesheet" href="http://www.ranchosierragolfcourse.com/styles/dagcStyle.css">')
+
+def print_html_head_section(gc_code):
     printf("  <head>")
-    print_html_style_section()
+    if gc_code == "rsgc":
+        print_html_style_section_rsgc()
+    else:
+        print_html_style_section_dagc()
     printf("  </head>")
 
 def print_html_body_message(golf_course_name):
@@ -160,14 +169,14 @@ def print_html_body_section(golf_course_name, column_styles, column_titles, reco
     print_html_body_table(golf_course_name, column_styles, column_titles, records)
     printf("  </body>")
  
-def print_records_in_html(filename, golf_course_name, column_styles, column_titles, records):
+def print_records_in_html(filename, gc_code, golf_course_name, column_styles, column_titles, records):
     global fp
     if filename == None:
         fp = None
     else:
         fp = open(filename, "w")
     printf("<html>")
-    print_html_head_section()
+    print_html_head_section(gc_code)
     print_html_body_section(golf_course_name, column_styles, column_titles, records)
     printf("</html>")
     if filename != None:
