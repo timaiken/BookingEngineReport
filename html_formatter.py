@@ -1,4 +1,6 @@
 import sys
+from datetime import datetime, date, timedelta
+import time
 
 fp = None
 
@@ -118,10 +120,13 @@ def print_html_style_section_dagc():
 
 def print_html_head_section(gc_code):
     printf("  <head>")
+    printf('    <meta charset="UTF-8" />')
+
     if gc_code == "rsgc":
         print_html_style_section_rsgc()
     else:
         print_html_style_section_dagc()
+
     printf("  </head>")
 
 def print_html_body_message(golf_course_name):
@@ -144,6 +149,7 @@ def print_html_table_row(column_styles, record, last_of_date):
         if style=='amount-style' and value != "":
             style='paid-style'
         if not last_of_date:
+#           printf('<td class="%s">%s</td>' % (style,  str(value).encode('ascii', 'ignore').decode('ascii')))
             printf('<td class="%s">%s</td>' % (style, value))
         else:
             printf('<td class="%s bottom-border">%s</td>' % (style, value))
@@ -158,7 +164,10 @@ def print_html_table_rows(column_styles, records):
 
 def print_html_body_table(golf_course_name, column_styles, column_titles, records):
     printf('<table class="styled-table">')
-    printf('<caption>%s</caption>' % (golf_course_name))
+    printf('<caption>%s<div style="text-align:right;font-size:12pt">%s</div></caption>' % (golf_course_name, datetime.now().strftime('<p style="text-align: right;">Generated %A, %B %d, %Y at %I:%M:%S %p CT<p>')))
+    # printf(datetime.now().strftime('<p style="text-align: right;">Last updated: %A, %B %d, %Y at %I:%M:%S %p CT<p>'))
+    # <caption style="font-size:20pt">caption<div style="text-align:right;font-size:12pt">date</div></caption>
+
     print_html_table_header(column_styles, column_titles)
     print_html_table_rows(column_styles, records)
     printf('</table>')

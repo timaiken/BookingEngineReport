@@ -80,7 +80,8 @@ def getSQLData(booking_type, startdate, enddate, is_rsgc, pwd):
         bookingDate = sort_date.strftime("%A %Y-%m-%d")
         # print("Booking date: %s" % (bookingDate))
 
-        bookingTime = getFieldValue(lol, "rangetime", booking_type)[0:5]
+        bookingTime = getFieldValue(lol, "rangetime", booking_type)
+        # bookingTime = getFieldValue(lol, "rangetime", booking_type)[0:5] + '-' +  getFieldValue(lol, "rangetime", booking_type)[8:5]
         # print("Booking time: %s" % (bookingTime))
 
         holes = getFieldValue(lol, "holes", booking_type)
