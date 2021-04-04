@@ -14,10 +14,35 @@ def send_email(pwd, path, rsgc, prod, to_email, cc_email, verbose_mode):
 
   if rsgc:
     subject = "Rancho Sierra Golf Course Reservation Times for " + long_date_string
-    body = "Attached are the tee times for Rancho Sierra Golf Course for the next seven days.\n\nHave a good day.\n\nMichele\n" 
+    link = '<a href="http://ranchosierragolfcourse.com/bookings/rsgc_' + short_date_string + '.html">here</a>'
+    html = """\
+    <html>
+      <body>
+        <div style="font-size:14px;color:darkgreen;">
+        <p>Attached are the tee times for Rancho Sierra Golf Course for the next 7 days. You can also view this booking report by clicking """ +  link  + """\
+          .</p><p>Have a very nice day.</p><br /><br />Michele
+        </p>
+        </div>
+      </body>
+    </html>
+    """
   else:
     subject = "Desert Aire Golf Course Reservation Times for " + long_date_string
-    body = "Attached are the tee times for Desert Aire Golf Course for the next seven days.\n\nHave a good day.\n\nMichele\n" 
+    link = '<a href="http://ranchosierragolfcourse.com/bookings/dagc_' + short_date_string + '.html">here</a>'
+    html = """\
+    <html>
+      <body>
+        <div style="font-size:14px;color:DodgerBlue;">
+        <p>Attached are the tee times for Desert Aire Golf Course for the next 7 days. You can also view this booking report by clicking """ +  link  + """\
+          .</p><p>Have a very nice day.</p><br /><br />Michele
+        </p>
+        </div>
+      </body>
+    </html>
+    """
+  text = "I hope things are going great for you today.\n\n"
+  part1 = MIMEText(text, "plain")
+  part2 = MIMEText(html, "html")
 
   port = 465  # For SSL
   sender_email = "michele@ranchosierragolfcourse.com" # "admin@avgolf-teetimes.com"
@@ -39,14 +64,16 @@ def send_email(pwd, path, rsgc, prod, to_email, cc_email, verbose_mode):
     print("cc_email:", cc_email)
 
   # Create a multipart message and set headers
-  message = MIMEMultipart()
+  #message = MIMEMultipart()
+  message = MIMEMultipart("alternative")
   message["From"] = sender_email
   message["To"] = to_email
   message["Subject"] = subject
   message["Cc"] = cc_email             # Recommended for mass emails
 
   # Add body to email
-  message.attach(MIMEText(body, "plain"))
+  message.attach(MIMEText(text, "plain"))
+  message.attach(MIMEText(html, "html"))
 
   filename = ntpath.basename(path)
 
