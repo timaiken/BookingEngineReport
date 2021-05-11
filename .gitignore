@@ -55,3 +55,7 @@ __pycache__/
 # booking generated pages
 booking_pages/
 
+#sensitive files
+timtest.sh
+universal_bookings.sh
+dont_commit.sh
